@@ -16,4 +16,12 @@ public class TodoService {
         todoRepository.save(todo);
         return todo;
     }
+
+    public Todo getTodo(Long todoId, User user) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 TODO 입니다."));
+        if(!todo.getUser().getUserId().equals(user.getUserId())){
+            throw new IllegalArgumentException("작성자 정보가 일치하지 않습니다.");
+        }
+        return todo;
+    }
 }
