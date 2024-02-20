@@ -51,7 +51,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 //이제 @AuthenticationPrincipal 로 조회가능
             }else{
                 // 인증정보가 유효하지 않은 경우
-                CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value());
+                CommonResponseDto<Void> commonResponseDto = new CommonResponseDto<>("토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value(),null);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.setContentType("application/json; charset=UTF-8");
                 response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));

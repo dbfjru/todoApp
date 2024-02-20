@@ -3,7 +3,6 @@ package io.hysena.todoapp.controller;
 import io.hysena.todoapp.dto.CommonResponseDto;
 import io.hysena.todoapp.dto.LoginRequestDto;
 import io.hysena.todoapp.dto.SignupRequestDto;
-import io.hysena.todoapp.jwt.JwtAuthorizationFilter;
 import io.hysena.todoapp.jwt.JwtUtil;
 import io.hysena.todoapp.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,32 +27,32 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<CommonResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult){
+    public ResponseEntity<CommonResponseDto<Void>> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()){
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             String message = "";
             for(FieldError fieldError : fieldErrors){
                 message += "<< " +fieldError.getField() + " : " + fieldError.getDefaultMessage() + ">> ";
             }
-            return ResponseEntity.badRequest().body(new CommonResponseDto(message,HttpStatus.BAD_REQUEST.value()));
+            return ResponseEntity.badRequest().body(new CommonResponseDto<>(message,HttpStatus.BAD_REQUEST.value(),null));
         }
         try{
             userService.signup(requestDto);
         }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
+            return ResponseEntity.badRequest().body(new CommonResponseDto<>(e.getMessage(),HttpStatus.BAD_REQUEST.value(),null));
         }
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto("회원가입 완료", HttpStatus.CREATED.value()));
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto<>("회원가입 완료", HttpStatus.CREATED.value(),null));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse){
+    public ResponseEntity<CommonResponseDto<Void>> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse){
         try {
             userService.login(loginRequestDto);
         }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(),HttpStatus.BAD_REQUEST.value()));
+            return ResponseEntity.badRequest().body(new CommonResponseDto<>(e.getMessage(),HttpStatus.BAD_REQUEST.value(),null));
         }
         httpServletResponse.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUsername()));
 
-        return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+        return ResponseEntity.ok().body(new CommonResponseDto<>("로그인 성공", HttpStatus.OK.value(),null));
     }
 }
