@@ -27,23 +27,25 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
-    // json
-    implementation 'org.json:json:20231013'
-
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     //Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security' //회원가입만 구현할 땐 잠시 비활성화
+
     //Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     //Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     //Lombok
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     //MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
