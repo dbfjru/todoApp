@@ -1,7 +1,7 @@
 package io.hysena.todoapp.service;
 
 import io.hysena.todoapp.dto.CreateTodoRequestDto;
-import io.hysena.todoapp.dto.ModifyRequestDto;
+import io.hysena.todoapp.dto.ModifyTodoRequestDto;
 import io.hysena.todoapp.entity.Todo;
 import io.hysena.todoapp.entity.User;
 import io.hysena.todoapp.repository.TodoRepository;
@@ -35,13 +35,13 @@ public class TodoService {
     }
 
     @Transactional
-    public Todo modifyTodo(Long todoId, ModifyRequestDto modifyRequestDto, User user) {
+    public Todo modifyTodo(Long todoId, ModifyTodoRequestDto modifyTodoRequestDto, User user) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 TODO 입니다."));
         if(!todo.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
-        todo.setTitle(modifyRequestDto.getTitle());
-        todo.setContents(modifyRequestDto.getContents());
+        todo.setTitle(modifyTodoRequestDto.getTitle());
+        todo.setContents(modifyTodoRequestDto.getContents());
         return todo;
     }
 

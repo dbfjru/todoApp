@@ -3,7 +3,7 @@ package io.hysena.todoapp.dto;
 import lombok.Getter;
 
 @Getter
-public class ModifyRequestDto {
+public class ModifyTodoRequestDto {
     private String title;
     private String contents;
 }

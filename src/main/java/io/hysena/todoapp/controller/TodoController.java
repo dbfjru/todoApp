@@ -2,7 +2,7 @@ package io.hysena.todoapp.controller;
 
 import io.hysena.todoapp.dto.CommonResponseDto;
 import io.hysena.todoapp.dto.CreateTodoRequestDto;
-import io.hysena.todoapp.dto.ModifyRequestDto;
+import io.hysena.todoapp.dto.ModifyTodoRequestDto;
 import io.hysena.todoapp.dto.TodoResponseDto;
 import io.hysena.todoapp.entity.Todo;
 import io.hysena.todoapp.impl.UserDetailsImpl;
@@ -54,11 +54,11 @@ public class TodoController {
 
     // 할일 수정 기능
     @PutMapping("/{todoId}")
-    public ResponseEntity<CommonResponseDto<TodoResponseDto>> modifyTodo(@PathVariable Long todoId, @RequestBody ModifyRequestDto modifyRequestDto
+    public ResponseEntity<CommonResponseDto<TodoResponseDto>> modifyTodo(@PathVariable Long todoId, @RequestBody ModifyTodoRequestDto modifyTodoRequestDto
             , @AuthenticationPrincipal UserDetailsImpl userDetails){
         Todo todo;
         try {
-            todo = todoService.modifyTodo(todoId, modifyRequestDto, userDetails.getUser());
+            todo = todoService.modifyTodo(todoId, modifyTodoRequestDto, userDetails.getUser());
         }catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto<>(e.getMessage(), HttpStatus.BAD_REQUEST.value(), null));
         }
