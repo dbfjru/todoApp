@@ -32,4 +32,12 @@ public class CommentService {
         comment.setText(text);
         return comment;
     }
+
+    public void deleteComment(Long commentId, User user) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        if(!comment.getUser().getUserId().equals(user.getUserId())){
+            throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
+        }
+        commentRepository.delete(comment);
+    }
 }
