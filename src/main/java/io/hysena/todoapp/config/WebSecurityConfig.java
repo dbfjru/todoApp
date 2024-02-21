@@ -44,6 +44,7 @@ public class WebSecurityConfig {
                 authorizeHttpRequest
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용
                         .requestMatchers("/users/**").permitAll() // "api/v1/users" 로 시작하는 모든 uri 허용
+                        .requestMatchers("/comments/todo/**").permitAll() // 댓글 목록 조회 기능 허용
                         .anyRequest().authenticated() // 이 외에 나머지는 인증 처리 필요
         );
 

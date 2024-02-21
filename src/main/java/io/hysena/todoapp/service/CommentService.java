@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -39,5 +41,10 @@ public class CommentService {
             throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
         }
         commentRepository.delete(comment);
+    }
+
+    public List<Comment> getCommentListOfTodo(Long todoId) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new IllegalArgumentException("할일이 존재하지 않습니다."));
+        return commentRepository.findAllByTodo(todo);
     }
 }

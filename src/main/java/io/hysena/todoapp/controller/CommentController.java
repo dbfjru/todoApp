@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")
@@ -51,5 +53,17 @@ public class CommentController {
             return ResponseEntity.badRequest().body(new CommonResponseDto<>(e.getMessage(), HttpStatus.BAD_REQUEST.value(),null));
         }
         return ResponseEntity.ok().body(new CommonResponseDto<>("댓글 삭제 성공", HttpStatus.OK.value(), null));
+    }
+
+    @GetMapping("/todo/{todoId}")
+    public ResponseEntity<CommonResponseDto<List<CommentResponseDto>>> getCommentListOfTodo(@PathVariable Long todoId){
+        List<Comment> commentList;
+        try {
+            commentList = commentService.getCommentListOfTodo(todoId);
+        }catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(new CommonResponseDto<>(e.getMessage(), HttpStatus.BAD_REQUEST.value(),null));
+        }
+        List<CommentResponseDto> responseDtoList = commentList.stream().map(CommentResponseDto::new).toList();
+        return ResponseEntity.ok().body(new CommonResponseDto<>("댓글 목록 조회 성공", HttpStatus.OK.value(), responseDtoList));
     }
 }
